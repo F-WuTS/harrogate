@@ -14,6 +14,10 @@ exports.inject = function(app) {
 
 exports.controller = function($scope, $rootScope, $location, $http, $timeout, AppCatalogProvider, ProgramService, ButtonsOnlyModalFactory, DownloadProjectModalFactory, FilenameModalFactory) {
   var compile, editor, onRouteChangeOff, on_window_beforeunload, save_file, saving;
+  // Variables for cmd+s and crtl+s support
+  $scope.metaPressed = false;
+  $scope.crtlPressed = false;
+
   $scope.is_compiling = false;
   $scope.documentChanged = false;
   $scope.ProgramService = ProgramService;
@@ -43,7 +47,7 @@ exports.controller = function($scope, $rootScope, $location, $http, $timeout, Ap
   });
 
   sort_users = function(users) {
-    users.sort( 
+    users.sort(
       function(a, b) {
         var nameA = a.name.toUpperCase();
         var nameB = b.name.toUpperCase();
@@ -280,6 +284,28 @@ exports.controller = function($scope, $rootScope, $location, $http, $timeout, Ap
     }
   };
   window.addEventListener('beforeunload', on_window_beforeunload);
+  window.addEventListener('keydown', function(event) {
+    if (event.keyCode == 91) {
+      $scope.metaPressed = true;
+    }
+    if (event.keyCode == 17) {
+      $scope.ctrlPressed = true;
+    }
+    if (event.keyCode == 83 && ($scope.metaPressed || $scope.ctrlPressed)) {
+      event.preventDefault();
+      $scope.save();
+    }
+  });
+
+  window.addEventListener('keyup', function(event) {
+    if (event.keyCode == 91) {
+      $scope.metaPressed = false;
+    }
+    if (event.keyCode == 17) {
+      $scope.ctrlPressed = false;
+    }
+  });
+
   onRouteChangeOff = $rootScope.$on('$locationChangeStart', function(event, newUrl) {
     // workaround to detect in-app url updates
     if (newUrl.indexOf('/#/apps/kiss') !== -1) {
@@ -479,7 +505,7 @@ exports.controller = function($scope, $rootScope, $location, $http, $timeout, Ap
         });
       });
     });
-    
+
   }
 
   $scope.$watch('active_user', function(newValue, oldValue) {
