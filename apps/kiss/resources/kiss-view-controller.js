@@ -16,7 +16,7 @@ exports.controller = function($scope, $rootScope, $location, $http, $timeout, Ap
   var compile, editor, onRouteChangeOff, on_window_beforeunload, save_file, saving;
   // Variables for cmd+s and crtl+s support
   $scope.metaPressed = false;
-  $scope.crtlPressed = false;
+  $scope.ctrlPressed = false;
 
   $scope.is_compiling = false;
   $scope.documentChanged = false;
