@@ -289,10 +289,12 @@ Workspace = (function() {
     {
       programContent =  '#!/usr/bin/python\n' 
         + 'import os, sys\n'
-        + 'from wallaby import *\n'
+        + 'import kipr as k\n'
         + '\n'
         + 'def main():\n'
         + '    print "Hello World"\n'
+	      + '    k.motor(1, 50)\n'
+      	+ '    k.msleep(5000)\n'
         + '\n'
         + 'if __name__== "__main__":\n'
         + '    sys.stdout = os.fdopen(sys.stdout.fileno(),"w",0)\n'
@@ -300,7 +302,7 @@ Workspace = (function() {
     }
     else
     {
-      programContent = '#include <kipr/botball.h>\n'
+      programContent = '#include <kipr/wombat.h>\n'
         + '\n'
         + 'int main()\n'
         + '{\n'
